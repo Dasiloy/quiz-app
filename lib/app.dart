@@ -23,6 +23,8 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Quiz App",
+      theme: ThemeData(),
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(

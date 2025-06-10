@@ -1,4 +1,7 @@
 import "package:flutter/material.dart";
+import "package:quiz_app/answer_button.dart";
+import "package:quiz_app/data/questions.dart";
+import "package:google_fonts/google_fonts.dart";
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -10,8 +13,42 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizState extends State<QuizScreen> {
+  var index = 0;
+
+  pickAnswer() {
+    setState(() {
+      index++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text("Quiz screen");
+    final question = questions[index];
+
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        margin: EdgeInsets.all(40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              questions[index].text,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lato(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 30),
+            ...question.options.map((answer) {
+              return AnswerButton(text: answer, onPressed: pickAnswer);
+            }),
+          ],
+        ),
+      ),
+    );
   }
 }
