@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:quiz_app/quiz_screen.dart";
 import "package:quiz_app/start_scree.dart";
+import "package:quiz_app/data/questions.dart";
+import "package:quiz_app/answer_screen.dart";
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -13,6 +15,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   String screen = "start-screen";
+  var selectedansers = <String>[];
 
   void switchScreen() {
     setState(() {
@@ -20,8 +23,28 @@ class _AppState extends State<App> {
     });
   }
 
+  void onChosseAnswer(String answer) {
+    selectedansers.add(answer);
+
+    if (questions.length == selectedansers.length) {
+      setState(() {
+        screen = 'answer-screen';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget child = StartScreen(switchScreen);
+
+    if (screen == "quiz-screen") {
+      child = QuizScreen(onPickAnswer: onChosseAnswer);
+    }
+
+    if (screen == "answer-screen") {
+      child = AsnwerScreen(answers: selectedansers);
+    }
+
     return MaterialApp(
       title: "Quiz App",
       theme: ThemeData(),
@@ -34,10 +57,7 @@ class _AppState extends State<App> {
               end: Alignment.bottomRight,
             ),
           ),
-          child:
-              screen == "start-screen"
-                  ? StartScreen(switchScreen)
-                  : QuizScreen(),
+          child: child,
         ),
       ),
     );
